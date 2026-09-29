@@ -10,38 +10,68 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-5">
+        <input type="text"
+               asp-for="SearchString"
+               class="form-control"
+               placeholder="Tìm theo mã, họ tên hoặc email..." />
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit"
+                class="btn btn-primary w-100">
+            Tìm kiếm
+        </button>
+    </div>
+
+    <div class="col-md-2">
+        <a class="btn btn-outline-secondary w-100"
+           asp-page="Index">
+            Xoá lọc
+        </a>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].StudentCode)
+                <a asp-page="Index"
+                   asp-route-sortOrder="@Model.CodeSort"
+                   asp-route-searchString="@Model.SearchString">
+                    Mã SV
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].LastName)
+                @Html.DisplayNameFor(model => Model.Students[0].LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].FirstName)
+                @Html.DisplayNameFor(model => Model.Students[0].FirstName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].FullName)
+                <a asp-page="Index"
+                   asp-route-sortOrder="@Model.NameSort"
+                   asp-route-searchString="@Model.SearchString">
+                    Họ và tên
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].Email)
+                @Html.DisplayNameFor(model => Model.Students[0].Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].Phone)
+                @Html.DisplayNameFor(model => Model.Students[0].Phone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
+                @Html.DisplayNameFor(model => Model.Students[0].EnrollmentDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student[0].Enrollments)
+                @Html.DisplayNameFor(model => Model.Students[0].Enrollments)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Student) {
+@foreach (var item in Model.Students) {
         <tr>
             <td>
                 @Html.DisplayFor(model => item.StudentCode)
@@ -76,3 +106,47 @@
 }
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+
+        <li class="page-item @(Model.Students.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link"
+               asp-page="Index"
+               asp-route-pageIndex="@(Model.Students.PageIndex - 1)"
+               asp-route-sortOrder="@Model.SortOrder"
+               asp-route-searchString="@Model.SearchString">
+                &laquo; Trước
+            </a>
+        </li>
+
+        @for (var i = 1; i <= Model.Students.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Students.PageIndex ? "active" : "")">
+                <a class="page-link"
+                   asp-page="Index"
+                   asp-route-pageIndex="@i"
+                   asp-route-sortOrder="@Model.SortOrder"
+                   asp-route-searchString="@Model.SearchString">
+                    @i
+                </a>
+            </li>
+        }
+
+        <li class="page-item @(Model.Students.HasNextPage ? "" : "disabled")">
+            <a class="page-link"
+               asp-page="Index"
+               asp-route-pageIndex="@(Model.Students.PageIndex + 1)"
+               asp-route-sortOrder="@Model.SortOrder"
+               asp-route-searchString="@Model.SearchString">
+                Sau &raquo;
+            </a>
+        </li>
+
+    </ul>
+</nav>
+
+<p class="text-muted small">
+    Trang @Model.Students.PageIndex / @Model.Students.TotalPages —
+    tổng @Model.Students.TotalItems sinh viên.
+</p>
