@@ -18,18 +18,17 @@ public class EditModel : PageModel
     [BindProperty]
     public Student Student { get; set; } = default!;
 
-    public async Task<IActionResult> OnGetAsync(int? studentid)
+    public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (studentid is null)
-        {
+        if (id is null)
             return NotFound();
-        }
 
-        var student = await _context.Students.FirstOrDefaultAsync(m => m.StudentId == studentid);
+        var student = await _context.Students
+            .FirstOrDefaultAsync(m => m.StudentId == id);
+
         if (student is null)
-        {
             return NotFound();
-        }
+
         Student = student;
         return Page();
     }
