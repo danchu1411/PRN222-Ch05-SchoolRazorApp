@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SchoolRazorApp.Models;
 using SchoolRazorApp.Data;
 
-namespace SchoolRazorApp.Pages.StudentPages;
+namespace SchoolRazorApp.Pages.Students;
 
 public class IndexModel : PageModel
 {

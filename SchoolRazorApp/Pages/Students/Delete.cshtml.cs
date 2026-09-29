@@ -4,16 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using SchoolRazorApp.Models;
 using SchoolRazorApp.Data;
 
-namespace SchoolRazorApp.Pages.StudentPages;
+namespace SchoolRazorApp.Pages.Students;
 
-public class DetailsModel : PageModel
+public class DeleteModel : PageModel
 {
     private readonly SchoolContext _context;
-    public DetailsModel(SchoolContext context)
+
+    public DeleteModel(SchoolContext context)
     {
         _context = context;
     }
 
+    [BindProperty]
     public Student Student { get; set; } = default!;
 
     public async Task<IActionResult> OnGetAsync(int? studentid)
@@ -34,5 +36,23 @@ public class DetailsModel : PageModel
         }
 
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostAsync(int? studentid)
+    {
+        if (studentid is null)
+        {
+            return NotFound();
+        }
+
+        var student = await _context.Students.FindAsync(studentid);
+        if (student != null)
+        {
+            Student = student;
+            _context.Students.Remove(Student);
+            await _context.SaveChangesAsync();
+        }
+
+        return RedirectToPage("./Index");
     }
 }
