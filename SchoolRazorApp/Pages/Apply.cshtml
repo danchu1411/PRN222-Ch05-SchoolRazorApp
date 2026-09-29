@@ -1,0 +1,64 @@
+﻿@page
+@model ApplyModel
+
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<h2>Đăng ký nhập học</h2>
+
+@if (TempData["Success"] is string msg)
+{
+    <div class="alert alert-success">@msg</div>
+}
+
+<form method="post" class="col-md-6">
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-2"></div>
+
+    <div class="mb-3">
+        <label asp-for="Applicant.FullName"
+               class="form-label"></label>
+
+        <input asp-for="Applicant.FullName"
+               class="form-control" />
+
+        <span asp-validation-for="Applicant.FullName"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Applicant.Email"
+               class="form-label"></label>
+
+        <input asp-for="Applicant.Email"
+               class="form-control" />
+
+        <span asp-validation-for="Applicant.Email"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Applicant.BirthDate"
+               class="form-label"></label>
+
+        <input asp-for="Applicant.BirthDate"
+               class="form-control" />
+
+        <span asp-validation-for="Applicant.BirthDate"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Gửi hồ sơ
+    </button>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

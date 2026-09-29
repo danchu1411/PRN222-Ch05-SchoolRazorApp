@@ -1,34 +1,43 @@
-namespace SchoolRazorApp
+using Microsoft.EntityFrameworkCore;
+using SchoolRazorApp.Data;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddRazorPages(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    options.Conventions.AddPageRoute(
+        "/Students/Index",
+        "danh-sach-sinh-vien");
+});
 
-            // Add services to the container.
-            builder.Services.AddRazorPages();
+builder.Services.AddDbContext<SchoolContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("SchoolDB")));
 
-            var app = builder.Build();
+builder.Services.AddDistributedMemoryCache();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+var app = builder.Build();
 
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapRazorPages();
-
-            app.Run();
-        }
-    }
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseSession();
+
+app.UseAuthorization();
+app.MapRazorPages();
+
+app.Run();
