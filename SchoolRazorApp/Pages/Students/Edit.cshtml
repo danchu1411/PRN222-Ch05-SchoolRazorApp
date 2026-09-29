@@ -33,11 +33,6 @@
                 <span asp-validation-for="Student.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Student.FullName" class="control-label"></label>
-                <input asp-for="Student.FullName" class="form-control" />
-                <span asp-validation-for="Student.FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <span class="text-danger">*</span>
                 <label asp-for="Student.Email" class="control-label"></label>
                 <input asp-for="Student.Email" class="form-control" aria-required="true"/>
@@ -50,13 +45,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Student.EnrollmentDate" class="control-label"></label>
-                <input asp-for="Student.EnrollmentDate" class="form-control" />
-                <span asp-validation-for="Student.EnrollmentDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Student.Enrollments" class="control-label"></label>
-                <input asp-for="Student.Enrollments" class="form-control" />
-                <span asp-validation-for="Student.Enrollments" class="text-danger"></span>
+                <input asp-for="Student.EnrollmentDate"
+                       type="date"
+                       asp-format="{0:yyyy-MM-dd}"
+                       class="form-control" />
+                <span asp-validation-for="Student.EnrollmentDate"
+                      class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
